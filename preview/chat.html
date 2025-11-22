@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天 - GoChat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            margin-left: 10px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e1e5e9;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .search-box {
+            padding: 15px;
+            border-bottom: 1px solid #e1e5e9;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #e1e5e9;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .contacts {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .contact {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .contact:hover {
+            background: #f8f9fa;
+        }
+        
+        .contact.active {
+            background: #eef2ff;
+        }
+        
+        .contact .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-info h4 {
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .contact-info p {
+            font-size: 13px;
+            color: #999;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f0f4f8;
+        }
+        
+        .chat-header {
+            padding: 15px 20px;
+            background: white;
+            border-bottom: 1px solid #e1e5e9;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-header .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 16px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message {
+            max-width: 70%;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            border-radius: 18px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .received {
+            background: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .sent {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .chat-input {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e1e5e9;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #e1e5e9;
+            border-radius: 25px;
+            font-size: 15px;
+            margin-right: 10px;
+        }
+        
+        .chat-input button {
+            width: 45px;
+            height: 45px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .online-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4CAF50;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border: 2px solid white;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .online {
+            background: #4CAF50;
+        }
+        
+        .offline {
+            background: #999;
+        }
+        
+        .typing-indicator {
+            padding: 10px 15px;
+            background: white;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 5px;
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <div style="width: 30px; height: 30px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #667eea; font-weight: bold;">G</div>
+            <span>GoChat</span>
+        </div>
+        <div class="user-info">
+            <div class="avatar">Y</div>
+            <span>用户名</span>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="sidebar">
+            <div class="search-box">
+                <input type="text" placeholder="搜索联系人...">
+            </div>
+            <div class="contacts">
+                <div class="contact active">
+                    <div class="avatar">A</div>
+                    <div class="contact-info">
+                        <h4>张三</h4>
+                        <p>今天天气真好！</p>
+                    </div>
+                    <div class="status-indicator online"></div>
+                </div>
+                <div class="contact">
+                    <div class="avatar">B</div>
+                    <div class="contact-info">
+                        <h4>李四</h4>
+                        <p>在吗？有个问题想问你</p>
+                    </div>
+                    <div class="status-indicator online"></div>
+                </div>
+                <div class="contact">
+                    <div class="avatar">C</div>
+                    <div class="contact-info">
+                        <h4>王五</h4>
+                        <p>昨天的会议记录已发送</p>
+                    </div>
+                    <div class="status-indicator offline"></div>
+                </div>
+                <div class="contact">
+                    <div class="avatar">D</div>
+                    <div class="contact-info">
+                        <h4>赵六</h4>
+                        <p>谢谢你的帮助！</p>
+                    </div>
+                    <div class="status-indicator online"></div>
+                </div>
+                <div class="contact">
+                    <div class="avatar">E</div>
+                    <div class="contact-info">
+                        <h4>孙七</h4>
+                        <p>明天记得开会</p>
+                    </div>
+                    <div class="status-indicator offline"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-area">
+            <div class="chat-header">
+                <div class="avatar">A</div>
+                <div>
+                    <h3>张三</h3>
+                    <p><span class="status-indicator online"></span>在线</p>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message received">
+                    你好！今天过得怎么样？
+                    <div class="message-time">10:30 AM</div>
+                </div>
+                
+                <div class="message sent">
+                    还不错呢，刚刚完成了一个项目！你呢？
+                    <div class="message-time">10:32 AM</div>
+                </div>
+                
+                <div class="message received">
+                    真棒！我也在忙一个新项目，有点挑战性。
+                    <div class="message-time">10:33 AM</div>
+                </div>
+                
+                <div class="message sent">
+                    听起来很有趣，是关于什么的项目？
+                    <div class="message-time">10:35 AM</div>
+                </div>
+                
+                <div class="message received">
+                    是一个聊天应用的前端设计，想要做得美观一些。
+                    <div class="message-time">10:36 AM</div>
+                </div>
+                
+                <div class="message sent">
+                    那正好，我们正在做的项目很相似！
+                    <div class="message-time">10:37 AM</div>
+                </div>
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="输入消息...">
+                <button id="sendButton">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('sendButton').addEventListener('click', sendMessage);
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const messagesContainer = document.getElementById('chatMessages');
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message sent';
+                
+                const now = new Date();
+                const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+                
+                messageDiv.innerHTML = `
+                    ${message}
+                    <div class="message-time">${timeString}</div>
+                `;
+                
+                messagesContainer.appendChild(messageDiv);
+                input.value = '';
+                
+                // 滚动到底部
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                // 模拟回复
+                setTimeout(() => {
+                    const replyDiv = document.createElement('div');
+                    replyDiv.className = 'message received';
+                    replyDiv.innerHTML = `
+                        收到你的消息了！这是一个自动回复。
+                        <div class="message-time">${timeString}</div>
+                    `;
+                    messagesContainer.appendChild(replyDiv);
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }, 1000);
+            }
+        }
+        
+        // 添加联系人点击事件
+        const contacts = document.querySelectorAll('.contact');
+        contacts.forEach(contact => {
+            contact.addEventListener('click', function() {
+                contacts.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 更新聊天标题
+                const contactName = this.querySelector('h4').textContent;
+                document.querySelector('.chat-header h3').textContent = contactName;
+            });
+        });
+    </script>
+</body>
+</html>
