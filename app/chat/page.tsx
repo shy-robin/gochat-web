@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import Logo from '@/components/Logo';
 
 // Interfaces remain the same
 interface Message {
@@ -92,9 +93,10 @@ export default function ChatPage() {
       {/* Sidebar */}
       <div className="w-80 bg-black bg-opacity-30 backdrop-blur-lg border-r border-solid border-white border-opacity-10 flex flex-col">
         <div className="p-4 border-b border-solid border-white border-opacity-10 flex items-center justify-between">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-pink-500 bg-clip-text text-transparent">
-            GoChat
-          </h1>
+          <div className="flex items-center">
+            <Logo className="w-10 h-10 mr-2" />
+            <span className="text-xl font-bold">GoChat</span>
+          </div>
           <div className="w-9 h-9 rounded-full bg-gradient-to-r from-cyan-500 to-pink-600 flex items-center justify-center font-bold">Y</div>
         </div>
         <div className="p-4">

@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Globe, Shield, MessageSquare } from 'lucide-react';
+import Logo from '@/components/Logo';
 
 export default function HomePage() {
   const router = useRouter();
@@ -11,10 +12,8 @@ export default function HomePage() {
     <div className="min-h-screen w-full flex items-center justify-center p-4 text-white">
       <main className="flex flex-col items-center w-full max-w-4xl text-center animate-fadeIn">
         
-        <div className="mb-10">
-          <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-cyan-400 to-pink-500 bg-clip-text text-transparent mb-4">
-            GoChat
-          </h1>
+        <div className="mb-10 flex flex-col items-center">
+          <Logo className="w-32 h-32 mb-4" />
           <p className="text-lg text-gray-300 max-w-xl mx-auto">
             探索未来的通信方式，连接每一个数字角落。
           </p>

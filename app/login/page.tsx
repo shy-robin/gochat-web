@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Logo from '@/components/Logo';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -26,10 +27,8 @@ export default function LoginPage() {
           boxShadow: '0 0 20px rgba(0, 170, 255, 0.3), 0 0 40px rgba(255, 0, 255, 0.3)',
         }}
       >
-        <div className="text-center mb-8 animate-fadeIn">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-pink-500 bg-clip-text text-transparent">
-            GoChat
-          </h1>
+        <div className="text-center mb-8 animate-fadeIn flex flex-col items-center">
+          <Logo className="w-24 h-24 mb-4" />
           <p className="text-gray-400 mt-2 text-sm">探索未来的通信方式</p>
         </div>
         
