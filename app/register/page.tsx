@@ -54,7 +54,7 @@ export default function RegisterPage() {
           <p className="text-gray-400 mt-2 text-sm">创建你的未来通信账户</p>
         </div>
         
-         <form onSubmit={handleSubmit} className="animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+         <form onSubmit={handleSubmit}>
            <div className="mb-5">
              <label htmlFor="username" className="block mb-2 text-gray-300 font-medium text-sm">
                用户名
@@ -129,7 +129,7 @@ export default function RegisterPage() {
            </button>
         </form>
         
-        <div className="text-center mt-6 text-gray-400 text-sm animate-fadeIn" style={{ animationDelay: '0.4s' }}>
+        <div className="text-center mt-6 text-gray-400 text-sm">
           已有账号？
           <Link href="/login" className="text-cyan-400 font-medium hover:underline hover:text-cyan-300">
             立即登录

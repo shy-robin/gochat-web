@@ -32,7 +32,7 @@ export default function LoginPage() {
           <p className="text-gray-400 mt-2 text-sm">探索未来的通信方式</p>
         </div>
         
-        <form onSubmit={handleSubmit} className="animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+        <form onSubmit={handleSubmit}>
           <div className="mb-5">
             <label htmlFor="email" className="block mb-2 text-gray-300 font-medium text-sm">
               邮箱
@@ -72,7 +72,7 @@ export default function LoginPage() {
           </button>
         </form>
         
-        <div className="text-center mt-6 text-gray-400 text-sm animate-fadeIn" style={{ animationDelay: '0.4s' }}>
+        <div className="text-center mt-6 text-gray-400 text-sm">
           没有账号？
           <Link href="/register" className="text-cyan-400 font-medium hover:underline hover:text-cyan-300">
             立即注册
