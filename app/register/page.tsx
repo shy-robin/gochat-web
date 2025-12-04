@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Logo from '@/components/Logo';
 import { createUser } from '@/lib/api/client';
+import toast from 'react-hot-toast';
 
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -19,12 +20,11 @@ export default function RegisterPage() {
     e.preventDefault();
     
     if (password !== confirmPassword) {
-      setError('两次输入的密码不一致！');
+      toast.error('两次输入的密码不一致！');
       return;
     }
     
     setLoading(true);
-    setError('');
     
     const response = await createUser({
       username,
@@ -36,10 +36,13 @@ export default function RegisterPage() {
     setLoading(false);
 
     if (response.status === 'success') {
-      alert('注册成功！即将跳转到登录页面...');
-      router.push('/login');
+      toast.success('注册成功！即将跳转到登录页面...', { duration: 3000 });
+      // Delay navigation slightly to allow toast to be seen
+      setTimeout(() => {
+        router.push('/login');
+      }, 1000);
     } else {
-      setError(response.message || '注册失败，请重试');
+      toast.error(response.message || '注册失败，请重试');
     }
   };
 
@@ -119,7 +122,7 @@ export default function RegisterPage() {
                required
                disabled={loading}
              />
-             {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
+             
            </div>
            
            <button

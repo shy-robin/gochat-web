@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Logo from '@/components/Logo';
 import { login } from '@/lib/api/client';
+import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -16,18 +17,18 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
 
     const response = await login({ username, password });
     setLoading(false);
 
     if (response.status === 'success') {
-      // In a real app, you'd save the token to localStorage or a cookie
-      // For now, just navigate to the chat page
-      alert('登录成功！即将跳转到聊天页面...');
-      router.push('/chat');
+      toast.success('登录成功！即将跳转到聊天页面...', { duration: 3000 });
+      // Delay navigation slightly to allow toast to be seen
+      setTimeout(() => {
+        router.push('/chat');
+      }, 1000);
     } else {
-      setError(response.message || '登录失败，请检查用户名和密码');
+      toast.error(response.message || '登录失败，请检查用户名和密码');
     }
   };
 
@@ -75,7 +76,7 @@ export default function LoginPage() {
               required
               disabled={loading}
             />
-            {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
+            
           </div>
           
           <button
