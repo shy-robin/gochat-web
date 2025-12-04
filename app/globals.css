@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --glow-border: 1px solid rgba(255, 255, 255, 0.1);
+  --glow-color-1: #00aaff;
+  --glow-color-2: #ff00ff;
 }
 
 @theme inline {
@@ -12,18 +15,45 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden; /* Hide scrollbars from the animated background */
 }
+
+/* Aurora Background Animation */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(0, 170, 255, 0.2), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255, 0, 255, 0.2), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05), transparent 30%);
+  animation: aurora 20s infinite linear;
+}
+
+@keyframes aurora {
+  0% {
+    transform: rotate(0deg) scale(1.5);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotate(180deg) scale(2);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1.5);
+    opacity: 0.5;
+  }
+}
+
 
 @keyframes fadeIn {
   from { 
@@ -37,27 +67,15 @@ body {
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.5s ease-out;
 }
 
-/* Custom placeholder styles */
-.placeholder-dark::placeholder {
-  color: #9ca3af !important; /* gray-400 equivalent but darker */
+/* Custom placeholder styles for dark theme */
+.placeholder-cyber::placeholder {
+  color: #555 !important;
   opacity: 1;
 }
-
-.placeholder-dark::-webkit-input-placeholder {
-  color: #9ca3af !important;
-}
-
-.placeholder-dark::-moz-placeholder {
-  color: #9ca3af !important;
-}
-
-.placeholder-dark:-ms-input-placeholder {
-  color: #9ca3af !important;
-}
-
-.placeholder-dark::-ms-input-placeholder {
-  color: #9ca3af !important;
-}
+.placeholder-cyber::-webkit-input-placeholder { color: #555 !important; }
+.placeholder-cyber::-moz-placeholder { color: #555 !important; }
+.placeholder-cyber:-ms-input-placeholder { color: #555 !important; }
+.placeholder-cyber::-ms-input-placeholder { color: #555 !important; }

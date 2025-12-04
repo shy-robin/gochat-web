@@ -13,24 +13,29 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // 这里可以添加实际的登录逻辑
+    // Mock login logic
     alert('登录成功！即将跳转到聊天页面...');
     router.push('/chat');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-4">
-      <div className="bg-white bg-opacity-95 rounded-2xl shadow-xl p-8 w-full max-w-md backdrop-blur-sm border border-white border-opacity-20">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+    <div className="min-h-screen w-full flex items-center justify-center p-4">
+      <div 
+        className="w-full max-w-md rounded-2xl p-8 bg-black bg-opacity-20 backdrop-blur-lg border border-solid border-white border-opacity-10 shadow-2xl"
+        style={{
+          boxShadow: '0 0 20px rgba(0, 170, 255, 0.3), 0 0 40px rgba(255, 0, 255, 0.3)',
+        }}
+      >
+        <div className="text-center mb-8 animate-fadeIn">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-pink-500 bg-clip-text text-transparent">
             GoChat
           </h1>
-          <p className="text-gray-600 mt-2">连接世界的美好</p>
+          <p className="text-gray-400 mt-2 text-sm">探索未来的通信方式</p>
         </div>
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="animate-fadeIn" style={{ animationDelay: '0.2s' }}>
           <div className="mb-5">
-            <label htmlFor="email" className="block mb-2 text-gray-700 font-medium">
+            <label htmlFor="email" className="block mb-2 text-gray-300 font-medium text-sm">
               邮箱
             </label>
             <input
@@ -38,14 +43,14 @@ export default function LoginPage() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:ring-opacity-50 placeholder-dark text-gray-800"
+              className="w-full px-4 py-3 bg-gray-900 bg-opacity-50 border-2 border-gray-700 rounded-lg text-base text-gray-200 transition-all duration-300 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400 focus:ring-opacity-50 placeholder-cyber"
               placeholder="请输入邮箱地址"
               required
             />
           </div>
           
           <div className="mb-6">
-            <label htmlFor="password" className="block mb-2 text-gray-700 font-medium">
+            <label htmlFor="password" className="block mb-2 text-gray-300 font-medium text-sm">
               密码
             </label>
             <input
@@ -53,24 +58,24 @@ export default function LoginPage() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:ring-opacity-50 placeholder-dark text-gray-800"
+              className="w-full px-4 py-3 bg-gray-900 bg-opacity-50 border-2 border-gray-700 rounded-lg text-base text-gray-200 transition-all duration-300 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 placeholder-cyber"
               placeholder="请输入密码"
               required
             />
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
           </div>
           
           <button
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg text-base transition-all duration-300 hover:transform hover:-translate-y-0.5 hover:shadow-lg"
+            className="w-full py-3 bg-gradient-to-r from-cyan-500 to-pink-600 text-white font-semibold rounded-lg text-base transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/50 hover:transform hover:-translate-y-0.5"
           >
             登录
           </button>
         </form>
         
-        <div className="text-center mt-6 text-gray-600">
+        <div className="text-center mt-6 text-gray-400 text-sm animate-fadeIn" style={{ animationDelay: '0.4s' }}>
           没有账号？
-          <Link href="/register" className="text-blue-500 font-medium hover:underline">
+          <Link href="/register" className="text-cyan-400 font-medium hover:underline hover:text-cyan-300">
             立即注册
           </Link>
         </div>
