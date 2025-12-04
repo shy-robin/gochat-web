@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Logo from '@/components/Logo';
+import { createUser } from '@/lib/api/client';
 
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -25,19 +26,20 @@ export default function RegisterPage() {
     setLoading(true);
     setError('');
     
-    try {
-      // Mock API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Assuming success
+    const response = await createUser({
+      username,
+      password,
+      email,
+      nickname: username,
+    });
+
+    setLoading(false);
+
+    if (response.status === 'success') {
       alert('注册成功！即将跳转到登录页面...');
       router.push('/login');
-
-    } catch (err) {
-      setError('网络错误或注册失败');
-      console.error('Registration error:', err);
-    } finally {
-      setLoading(false);
+    } else {
+      setError(response.message || '注册失败，请重试');
     }
   };
 

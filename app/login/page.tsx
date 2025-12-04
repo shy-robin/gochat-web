@@ -4,19 +4,31 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Logo from '@/components/Logo';
+import { login } from '@/lib/api/client';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Mock login logic
-    alert('登录成功！即将跳转到聊天页面...');
-    router.push('/chat');
+    setLoading(true);
+    setError('');
+
+    const response = await login({ username, password });
+    setLoading(false);
+
+    if (response.status === 'success') {
+      // In a real app, you'd save the token to localStorage or a cookie
+      // For now, just navigate to the chat page
+      alert('登录成功！即将跳转到聊天页面...');
+      router.push('/chat');
+    } else {
+      setError(response.message || '登录失败，请检查用户名和密码');
+    }
   };
 
   return (
@@ -34,17 +46,18 @@ export default function LoginPage() {
         
         <form onSubmit={handleSubmit}>
           <div className="mb-5">
-            <label htmlFor="email" className="block mb-2 text-gray-300 font-medium text-sm">
-              邮箱
+            <label htmlFor="username" className="block mb-2 text-gray-300 font-medium text-sm">
+              用户名
             </label>
             <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-3 bg-gray-900 bg-opacity-50 border-2 border-gray-700 rounded-lg text-base text-gray-200 transition-all duration-300 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400 focus:ring-opacity-50 placeholder-cyber"
-              placeholder="请输入邮箱地址"
+              placeholder="请输入用户名"
               required
+              disabled={loading}
             />
           </div>
           
@@ -60,15 +73,17 @@ export default function LoginPage() {
               className="w-full px-4 py-3 bg-gray-900 bg-opacity-50 border-2 border-gray-700 rounded-lg text-base text-gray-200 transition-all duration-300 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 placeholder-cyber"
               placeholder="请输入密码"
               required
+              disabled={loading}
             />
             {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
           </div>
           
           <button
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-cyan-500 to-pink-600 text-white font-semibold rounded-lg text-base transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/50 hover:transform hover:-translate-y-0.5"
+            className="w-full py-3 bg-gradient-to-r from-cyan-500 to-pink-600 text-white font-semibold rounded-lg text-base transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/50 hover:transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-wait"
+            disabled={loading}
           >
-            登录
+            {loading ? '登录中...' : '登录'}
           </button>
         </form>
         
